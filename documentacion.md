@@ -21,11 +21,10 @@ df_loyalty: Tenemos en df_loyalty (información de clientes): 16737 filas y 15 c
                 - *City*: es object ----------> ✅ city
                 - *Postal*: Code es object ¿dejar? ----------> ✅ postal_code
                 - *Gender*: ¿hacer .map()?, es object        # Male: masculino y Female: femenino ----------> ✅ gender
-                - *Education* ¿level?: categórica ordinal, es object       # Nivel educativo alcanzado -----> ✅ education_level
-                                                                            por el cliente (ej. Bachelor para licenciatura, 
+                - *Education* ¿level?: categórica ordinal, es object       # Nivel educativo alcanzado -----> ✅ education                                               por el                                                              (ej. Bachelor para licenciatura, 
                                                                             College para estudios universitarios o técnicos, etc.)
                 - *Salary*: 12499 de 16737, hay datos nulos, es float, ¿$? ¿pasar ',' a '.''         
-                                                    # Ingreso anual estimado del cliente ----------> ✅ annual_salary
+                                                    # Ingreso anual estimado del cliente ----------> ✅ salary
                 - *Marital Status*: object, revisar .unique()   ----------> ✅ marital_status  
                                                     # Estado civil del cliente (ej. Single para soltero, 
                                                     Married para casado, Divorced para divorciado, etc.)
@@ -74,19 +73,33 @@ df_flight:  Tenemos en df_flight (información de vuelos de clientes): 405624 fi
 
 
 ## 1. Cambios a realizar
-    loyalty_number (tipo int64 / object) 🔗 Clave primaria. Asegurar que está presente.
-    country
-    province
-    city
-    postal_code
-    gender
-    education_level
-    annual_salary
-    marital_status
-    loyalty_card
-    clv
-    enrollment_type
-    enrollment_year
-    enrollment_month
-    cancellation_year
-    cancellation_month
+    ## df_loyalty
+    - loyalty_number (tipo int / object) 🔗 Clave primaria. Asegurar que está presente.
+    - country (tipo object) ⚙️ Estandarizar nombres de países.
+    - province (tipo object) ⚙️ Mantener si es útil para análisis regional.
+    - city (tipo object) ⚙️ Mantener si es útil. Se puede agrupar por ciudad para análisis.
+    - postal_code (tipo object) ⚙️ Depende del análisis. Puede eliminarse si no se usa.
+    - gender  (tipo object) ⚙️ Usar .map() para convertirlo en categoría (M/F).
+    - education (tipo object) ⚙️ Convertir a variable categórica  ordinal (High School < College < Bachelor < Master < PhD).
+    - salary (tipo float) ⚙️ Manejo de nulos: Imputación con la mediana. Convertir ',' en '.' si es necesario.
+    - marital_status (tipo object) ⚙️ Revisar .unique() para estandarizar categorías.
+    - loyalty_card (tipo object) ⚙️ Inspeccionar si afecta el análisis. Si tiene niveles, convertir a ordinal (Bronze < Silver < Gold).
+    - clv (tipo float) ⚙️ Importante para segmentación (Clientes de alto valor vs. bajo valor). Revisar .unique() para estandarizar 
+    - enrollment_type (tipo object) ⚙️ Tipo de inscripción al programa de lealtad. Revisar si tiene impacto en la retención de clientes.
+    - enrollment_year (tipo int) ⚙️ Útil para analizar fidelización (Clientes antiguos vs. nuevos).
+    - enrollment_month (tipo int) ⚙️ Combinable con enrollment_year para ver tendencias.
+    - cancellation_year (tipo float) ⚙️ Solo 2067 valores. Revisar si impacta el análisis. Puede tratarse como categórica (canceló/no canceló).
+    - cancellation_month (tipo float) Puede combinarse con cancellation_year para ver patrones de cancelación.
+
+    ## df_flight
+    - loyalty_number (tipo int / object) 🔗 Clave primaria. Debe coincidir con df_loyalty para hacer **merge()**.
+    - year (tipo int) Año del vuelo registrado. Puede usarse para analizar tendencias anuales.
+    - month (tipo int) Mes en que ocurrió el vuelo. Combinable con year para ver estacionalidad.
+    - flights_booked (tipo int) Total de vuelos reservados en el mes.  Importante para **analizar patrones de compra.**
+    - flights_with_companions (tipo int) Puede indicar clientes que viajan en grupo.
+    - total_flights (tipo int) Clave para segmentar clientes frecuentes.
+    - distance (tipo int **pasar a float?**) Distancia total volada en el mes. Convertir a unidades consistentes (millas o km).
+    - **points_accumulated** (tipo  float) Revisar relación con distancia volada.
+    - **points_redeemed** (tipo int) Puede indicar clientes más activos en el programa por los puntos canjeados.
+    - dollar_cost_points_redeemed (tipo int) Útil para analizar el valor real del programa de lealtad.
+
