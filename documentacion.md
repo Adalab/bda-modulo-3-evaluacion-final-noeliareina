@@ -157,9 +157,9 @@ Análisis exploratorio
 - Int:
     - loyalty_id ✅ 
     - salary ✅
-    - clv - valores únicos, estandarizar, es el valor que el cliente ha generado para la empresa, ¿es un valor monetario? ¿es un porcentaje?
-    - enrollment_year - analizar fidelización, clientes antiguos vs nuevos
-    - enrollment_month - combinar con enrollment_year para ver patrón de compra
+    - clv ✅ - valores únicos, estandarizar, es el valor que el cliente ha generado para la empresa, ¿es un valor monetario? ¿es un porcentaje?  
+    - enrollment_year ✅ - analizar fidelización, clientes antiguos vs nuevos 
+    - enrollment_month ✅ - combinar con enrollment_year para ver patrón de compra - enrollment = inscripción
     - cancellation_year - solo tiene 2067 valores, ¿ % ? ¿eliminar? ¿categorizar?
     - cancellation_month - ver patrones de cancelación ¿combinar con cancellation_year?
 
