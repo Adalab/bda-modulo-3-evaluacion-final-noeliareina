@@ -1,4 +1,4 @@
-## ✈️ Análisis de Clientes y Vuelos de la Aerolínea  
+## ✈️ Análisis de Comportamiento de Clientes y Vuelos de la Aerolínea  
 
 ## Objetivo  
 En este análisis exploraremos los datos de clientes inscritos en una membresía de aerolínea y sus vuelos.  Realizaremos limpieza, visualización y evaluación de los datos para obtener insights relevantes.  
