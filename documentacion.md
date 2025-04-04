@@ -21,8 +21,7 @@ df_loyalty: Tenemos en df_loyalty (información de clientes): 16737 filas y 15 c
                 - *City*: es object ----------> ✅ city
                 - *Postal*: Code es object ¿dejar? ----------> ✅ postal_code
                 - *Gender*: ¿hacer .map()?, es object        # Male: masculino y Female: femenino ----------> ✅ gender
-                - *Education* ¿level?: categórica ordinal, es object       # Nivel educativo alcanzado -----> ✅ education                                               por el                                                              (ej. Bachelor para licenciatura, 
-                                                                            College para estudios universitarios o técnicos, etc.)
+                - *Education* ¿level?: categórica ordinal, es object       # Nivel educativo alcanzado -----> ✅ education                                               por el                                                              (ej. Bachelor para licenciatura, College para estudios universitarios o técnicos, etc.)
                 - *Salary*: 12499 de 16737, hay datos nulos, es float, ¿$? ¿pasar ',' a '.''         
                                                     # Ingreso anual estimado del cliente ----------> ✅ salary
                 - *Marital Status*: object, revisar .unique()   ----------> ✅ marital_status  
@@ -74,13 +73,13 @@ df_flight:  Tenemos en df_flight (información de vuelos de clientes): 405624 fi
 
 ## 1. Cambios a realizar
     ## df_loyalty
-    - loyalty_number (tipo int / object) 🔗 Clave primaria. Asegurar que está presente.
+    - loyalty_number (tipo int) 🔗 Clave primaria. Asegurar que está presente (no index_col = 0)
     - country (tipo object) ⚙️ Estandarizar nombres de países.
     - province (tipo object) ⚙️ Mantener si es útil para análisis regional.
     - city (tipo object) ⚙️ Mantener si es útil. Se puede agrupar por ciudad para análisis.
     - postal_code (tipo object) ⚙️ Depende del análisis. Puede eliminarse si no se usa.
     - gender  (tipo object) ⚙️ Usar .map() para convertirlo en categoría (M/F).
-    - education (tipo object) ⚙️ Convertir a variable categórica  ordinal (High School < College < Bachelor < Master < PhD).
+    - education (tipo object) ⚙️ Convertir a variable categórica ordinal (High School < College < Bachelor < Master < PhD).
     - salary (tipo float) ⚙️ Manejo de nulos: Imputación con la mediana. Convertir ',' en '.' si es necesario.
     - marital_status (tipo object) ⚙️ Revisar .unique() para estandarizar categorías.
     - loyalty_card (tipo object) ⚙️ Inspeccionar si afecta el análisis. Si tiene niveles, convertir a ordinal (Bronze < Silver < Gold).
@@ -103,3 +102,112 @@ df_flight:  Tenemos en df_flight (información de vuelos de clientes): 405624 fi
     - **points_redeemed** (tipo int) Puede indicar clientes más activos en el programa por los puntos canjeados.
     - dollar_cost_points_redeemed (tipo int) Útil para analizar el valor real del programa de lealtad.
 
+### 1.1 Limpieza 
+- loyalty_number: Asegurarse de que sea único y esté presente en ambos datasets.
+
+    **df_loyalty:** 
+    Análisis exploratorio
+    - "Salary" tiene 16737 filas y 12499 valores, hay datos nulos, es float ✅
+    - Comparar year y month para ver cual eliminar
+    - Analizar patrones de compra según flights_booked (mediana ... hacer gráfica)
+
+    Limpieza
+    - Cambiar distance de int a float
+    - Renombrar columnas
+    - Gestión de valores nulos en annual_salary, cancellation_year y cancellation_month
+
+    Análisis estadístico
+    - ¿Afecta la distancia de los vuelos que se recorren a los puntos?
+    - ¿En qué año se han registrado más vuelos o más reservas?
+    - ¿Los clientes que viajan en grupo tienen más puntos acumulados o canjeados? Hipótesis
+
+
+
+
+**df_flight:** 
+Análisis exploratorio
+- Comparar year y month para ver cual eliminar
+- Analizar patrones de compra según flights_booked (mediana ... hacer gráfica)
+
+Limpieza
+- Cambiar distance de int a float
+- Renombrar columnas
+- Gestión de valores nulos en annual_salary, cancellation_year y cancellation_month
+
+Análisis estadístico
+- ¿Afecta la distancia de los vuelos que se recorren a los puntos?
+- ¿En qué año se han registrado más vuelos o más reservas?
+- ¿Los clientes que viajan en grupo tienen más puntos acumulados o canjeados? Hipótesis
+
+
+
+Al finalizar la limpieza de los datos, se guardarán en un nuevo archivo .csv para su posterior análisis.
+
+
+
+
+Notas de tratamiento de datos:
+- Hemos cambiado los nombres de las columnas para que sean más descriptivos y fáciles de entender. Por ejemplo, `loyalty_number` se convertió en `loyalty_id`, `Enrollment Month` se convertió en `enrollment_month`, etc.
+
+**df_loyalty:** 
+
+Análisis exploratorio
+
+*Valores numéricos, int y float*:
+- Int:
+    - loyalty_id ✅ 
+    - salary ✅
+    - clv - valores únicos, estandarizar, es el valor que el cliente ha generado para la empresa, ¿es un valor monetario? ¿es un porcentaje?
+    - enrollment_year - analizar fidelización, clientes antiguos vs nuevos
+    - enrollment_month - combinar con enrollment_year para ver patrón de compra
+    - cancellation_year - solo tiene 2067 valores, ¿ % ? ¿eliminar? ¿categorizar?
+    - cancellation_month - ver patrones de cancelación ¿combinar con cancellation_year?
+
+*Valores categóricos*:
+- Nominales: object
+    - country - ¿estandarizar? 
+    - province - ¿útil?
+    - city - # Hacer groupby para ver si hay provincias con más de una ciudad
+    - postal_code - ¿eliminar? ¿pasar a int?
+    - gender - ¿convertir con map?
+    - marital_status - ver valores únicos
+
+- Ordinales: Object
+    - education - es un level, ¿convertir con map?
+    - loyalty_card - inspeccionar valores únicos ¿orden?
+    - enrollment_type - tipo de membresía, ¿convertir con map? 
+Limpieza
+- Gestión de valores nulos en _salary, cancellation_year y cancellation_month
+
+
+**df_flights:**
+
+Análisis exploratorio
+
+*Valores numéricos, int y float*:
+- loyalty_id - ✅
+- year -  analizar registros de vuelos anuales
+- month - es de cada vuelo, comparar year y month para ver cual eliminar, estadística de vuelos por mes, ¿hay meses con más vuelos? ¿hay meses con más cancelaciones?
+- flights_booked - ¿es un porcentaje? vuelos reservados en el mes, analizar patrones de compra con estadística
+- flights_with_companions - ¿se acumulan más puntos? ¿se cancelan más vuelos?
+- total_flights - ¿es un porcentaje? vuelos totales por cliente
+- distance - es int ¿pasar a float? dist. volada en el mes, convertir a millas o km
+- points_accumulated - float, ¿pasar a int? relacionar con loyalty_id, ¿se acumulan más puntos viajando solo o en grupo?
+- points_redeemed - int, puntos canjeados, actividad de clientes
+- dollar_cost_points_redeemed - int, ¿pasar a floar? ¿$ quitar? relacionado con points_redeemed, valor en dólares de puntos ya canjeados durante el mes
+
+Limpieza
+- Cambiar distance de int a float
+
+Unión de los datasets
+- Unir los datasets por loyalty_id, asegurando que los datos estén alineados correctamente y que no haya duplicados o pérdidas de información.
+- Verificar que la unión se haya realizado correctamente y que los datos estén completos y listos para el análisis posterior.
+
+Análisis estadísticos
+- ¿Afecta la distancia de los vuelos que se recorren a los puntos?
+- ¿Hay meses con más vuelos? ¿hay meses con más cancelaciones?
+- ¿En qué año se han registrado más vuelos o más reservas?
+- Patrones de compra de clientes
+- ¿Los clientes que viajan en grupo tienen más puntos acumulados o canjeados? 
+
+Hipótesis
