@@ -3,6 +3,15 @@
 ## Objetivo  
 En este análisis exploraremos los datos de clientes inscritos en una membresía de aerolínea y sus vuelos.  Realizaremos limpieza, visualización y evaluación de los datos para obtener insights relevantes.  
 
+  -  Preparación de Datos: Filtra el conjunto de datos para incluir únicamente las columnas relevantes:'Flights Booked' y 'Education'.
+  -  Análisis Descriptivo: Agrupa los datos por nivel educativo y calcula estadísticas descriptivas
+        básicas (como el promedio, la desviación estándar) del número de vuelos reservados para cada
+        grupo.
+  -  Prueba Estadística: Realiza una prueba de hipótesis para determinar si existe una diferencia
+        significativa en el número de vuelos reservados entre los diferentes niveles educativos.
+
+
+
 Tras importar los archivos .csv y abrirlos podemos obtener información de las variables a través del método .shape y .info() aplicado en cada dataset.
 Queremos encontrar problemas en los datos: valores nulos, anormales, falta de datos, ...
 
@@ -159,16 +168,17 @@ Análisis exploratorio
     - salary ✅
     - clv ✅ - valores únicos, estandarizar, es el valor que el cliente ha generado para la empresa, ¿es un valor monetario? ¿es un porcentaje?  
     - enrollment_year ✅ - analizar fidelización, clientes antiguos vs nuevos 
-    - enrollment_month ✅ - combinar con enrollment_year para ver patrón de compra - enrollment = inscripción
-    - cancellation_year - solo tiene 2067 valores, ¿ % ? ¿eliminar? ¿categorizar?
-    - cancellation_month - ver patrones de cancelación ¿combinar con cancellation_year?
+    - enrollment_month ✅ - combinar con enrollment_year para ver patrón de compra, enrollment = inscripción
+    - cancellation_year ❌  solo tiene 2067 valores, ¿ % ? ¿eliminar? ¿categorizar?
+    - cancellation_month ❌  ver patrones de cancelación ¿combinar con cancellation_year? ¿ % ? ¿eliminar? 
 
 *Valores categóricos*:
-- Nominales: object
-    - country - ¿estandarizar? 
-    - province - ¿útil?
-    - city - # Hacer groupby para ver si hay provincias con más de una ciudad
-    - postal_code - ¿eliminar? ¿pasar a int?
+- Nominales: object 
+    - country - ¿estandarizar? ❌
+    - province ✅ - ¿útil? 
+    - city  ✅ - # Hacer groupby para ver si hay provincias con más de una ciudad 
+           df.groupby(['province', 'city']).size()
+    - postal_code  ✅ - ¿eliminar? ¿pasar a int?
     - gender - ¿convertir con map?
     - marital_status - ver valores únicos
 
@@ -209,5 +219,45 @@ Análisis estadísticos
 - ¿En qué año se han registrado más vuelos o más reservas?
 - Patrones de compra de clientes
 - ¿Los clientes que viajan en grupo tienen más puntos acumulados o canjeados? 
+
+
+**Métodos interesantes**
+
+df_unido.drop(columns=["supermarket"], inplace=True)
+df_unido.head()
+df_unido.info()
+df_unido.shape
+
+isin(): seleccionar filas que contienen valores específicos en una columna. Un valor 
+o lista de valores 
+df[‘columna’].isin(valores) 
+1. Crear filtro: filtro = [‘valor1’, ‘valor2’] 
+2. Aplicar filtro df_nuevo = df[df[‘columna’].isin(filtro)] 
+3. df_nuevo es igual pero con las filas que contienen los valores del filtro
+
+between(): filtrar por un rango 
+nuevo_df = df[df[‘columna’].between(inicio, fin, inclusive=both/left/right/neither)] 
+• both: incluye los valores de inicio y fin 
+• left: incluye inicio pero no fin 
+• right: incluye fin pero no inicio 
+• neither: no incluye ni inicio ni fin 
+
+str.contains(): filtrar por palabras. Devuelve un booleano. 
+df[‘columna’].str.contains(pat, case=True, na=nan, regex=True) 
+• pat: patrón de texto a buscar 
+• case: (op) True distingue mayúsculas y minúsculas 
+• na=nan: (op) 
+• regex: (op) True se interpreta como regex 
+
+.reset_index(): nuevo DataFrame del resultado con índice en 0 
+df.groupby(columna)[columna_operacion].operacion(numeric_only=True):  aplica 
+la operación a todas columnas numéricas 
+variable_agrupacion.ngroups: grupos formados después de la agrupación
+
+ 
+.replace(): reemplaza valores en un DataFrame o Serie por otros especificados 
+Sintaxis: 
+df[‘col’] = df[‘col’].replace(valor a reemplazar, nuevo valor) 
+Se utiliza para reemplazar un valor concreto de esa columna, no todos 
 
 Hipótesis
