@@ -131,8 +131,6 @@ df_flight:  Tenemos en df_flight (información de vuelos de clientes): 405624 fi
     - ¿Los clientes que viajan en grupo tienen más puntos acumulados o canjeados? Hipótesis
 
 
-
-
 **df_flight:** 
 Análisis exploratorio
 - Comparar year y month para ver cual eliminar
@@ -179,13 +177,13 @@ Análisis exploratorio
     - city  ✅ - # Hacer groupby para ver si hay provincias con más de una ciudad 
            df.groupby(['province', 'city']).size()
     - postal_code  ✅ - ¿eliminar? ¿pasar a int?
-    - gender - ¿convertir con map?
-    - marital_status - ver valores únicos
+    - gender ✅ - ¿convertir con map?
+    - marital_status ✅ - ver valores únicos
 
 - Ordinales: Object
-    - education - es un level, ¿convertir con map?
-    - loyalty_card - inspeccionar valores únicos ¿orden?
-    - enrollment_type - tipo de membresía, ¿convertir con map? 
+    - education ✅ - es un level, ¿convertir con map?
+    - loyalty_card ✅ - inspeccionar valores únicos ¿orden?
+    - enrollment_type ✅ - tipo de membresía, ¿convertir con map? 
 Limpieza
 - Gestión de valores nulos en _salary, cancellation_year y cancellation_month
 
@@ -196,18 +194,19 @@ Análisis exploratorio
 
 *Valores numéricos, int y float*:
 - loyalty_id - ✅
-- year -  analizar registros de vuelos anuales
-- month - es de cada vuelo, comparar year y month para ver cual eliminar, estadística de vuelos por mes, ¿hay meses con más vuelos? ¿hay meses con más cancelaciones?
-- flights_booked - ¿es un porcentaje? vuelos reservados en el mes, analizar patrones de compra con estadística
-- flights_with_companions - ¿se acumulan más puntos? ¿se cancelan más vuelos?
-- total_flights - ¿es un porcentaje? vuelos totales por cliente
-- distance - es int ¿pasar a float? dist. volada en el mes, convertir a millas o km
-- points_accumulated - float, ¿pasar a int? relacionar con loyalty_id, ¿se acumulan más puntos viajando solo o en grupo?
-- points_redeemed - int, puntos canjeados, actividad de clientes
-- dollar_cost_points_redeemed - int, ¿pasar a floar? ¿$ quitar? relacionado con points_redeemed, valor en dólares de puntos ya canjeados durante el mes
+- year - ✅   analizar registros de vuelos anuales
+- month - ✅  es de cada vuelo, comparar year y month para ver cual eliminar, estadística de vuelos por mes, ¿hay meses con más vuelos? ¿hay meses con más cancelaciones?
+- flights_booked - ✅ vuelos reservados en el mes, analizar patrones de compra con estadística
+- flights_with_companions - ✅  ¿se acumulan más puntos? ¿se cancelan más vuelos?
+- total_flights - ✅ vuelos totales por cliente
+- distance -  ✅  es int ¿pasar a float? si dist., volada en el mes, convertir a millas o km
+- points_accumulated - ✅  float, ¿pasar a int? no, relacionar con loyalty_id, ¿se acumulan más puntos viajando solo o en grupo?
+- points_redeemed -✅ int, puntos canjeados, actividad de clientes
+- dollar_cost_points_redeemed ✅  - int, ¿pasar a float? si, ¿$ quitar? relacionado con points_redeemed, valor en dólares de puntos ya canjeados durante el mes
 
 Limpieza
-- Cambiar distance de int a float
+- Cambiar distance de int a float 1 decimal
+- Cambiar dollar_cost_points_redeemed a float 1 decimal
 
 Unión de los datasets
 - Unir los datasets por loyalty_id, asegurando que los datos estén alineados correctamente y que no haya duplicados o pérdidas de información.
@@ -260,4 +259,29 @@ Sintaxis:
 df[‘col’] = df[‘col’].replace(valor a reemplazar, nuevo valor) 
 Se utiliza para reemplazar un valor concreto de esa columna, no todos 
 
-Hipótesis
+## Análisis en Visualizaciones
+
+1. ¿Cómo se distribuye la cantidad de vuelos reservados por mes durante el año? 
+
+Relación de variables flights_booked con points_accumulated: 
+
+
+2. ¿Existe una relación entre la distancia de los vuelos y los puntos acumulados por los cliente?
+
+Relación de variables province con loyalty_id
+
+3. ¿Cuál es la distribución de los clientes por provincia o estado?
+
+Relación de variables loyalty_id y province
+
+4. . ¿Cómo se compara el salario promedio entre los diferentes niveles educativos de los clientes?
+
+Relación de variables salary y education_level
+
+5. ¿Cuál es la proporción de clientes con diferentes tipos de tarjetas de fidelidad?
+
+Relación de variables loyalty_card y loyalty_id
+
+6. ¿Cómo se distribuyen los clientes según su estado civil y género?
+
+Relación de variables marital_status y gender
